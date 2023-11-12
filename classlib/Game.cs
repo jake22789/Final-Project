@@ -10,7 +10,7 @@ public record Game
     public int boardsize;
     public int mana;
     public int handsize;
-    Deck? drawpile = new Deck();
+    public Deck? drawpile = new Deck();
     Deck? graveyard = new Deck();
     Deck? hand = new Deck();
     Deck? battlefeald = new Deck();
@@ -38,6 +38,14 @@ public record Game
         {
             hand.add(drawpile.drawcard());
         }
+    }
+    public Game(Deck selected)
+    {
+        playerLife = 40;
+        player2Life = 40;
+        boardsize = 2;
+        handsize = 7;
+        drawpile = selected;
     }
     public void drawcard()
     {

@@ -7,21 +7,19 @@ public record Land : Card
     string? name;
     Rarity rank;
     color type;
-    public string? Typename;
+    
 
     Land(string? _name, Rarity _rank, color _type)
     {
         name = _name;
         rank = _rank;
         type = _type;
-        Typename = "land";
     }
      public Land()
     {
         name = "dessert";
         rank = Rarity.common;
         type = color.green;
-        Typename = "land";
     }
 
     public override string? getname()

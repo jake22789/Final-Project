@@ -23,5 +23,27 @@ public record Deck
     public void remove(int number){
         deck.Remove(select(number));
     }
+    public void shuffle(int randomiser){
+       // IEnumerable<Card> holder = from Card in deck where Card.gettype() == "Creature" select Card;
+       bool swaper=false;
+       List<Card> holder = new List<Card>();
+       for(int i=0;i<deck.Count;i++)
+       {
+        if (swaper == false){
+            holder.Add(deck[i]);
+            deck.Remove(deck[i]);
+            swaper=true;
+        }
+        else{
+            swaper = false;
+        }
+       }
+       foreach(Card item in holder){
+        deck.Add(item);
+       }
+       if(randomiser > 0){
+        this.shuffle(randomiser - 1);
+       }
+    }
 
 }

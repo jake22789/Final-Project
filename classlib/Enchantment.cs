@@ -8,12 +8,19 @@ public record Enchantment : Card
     int cost { get; set; }
     string? ability;
 
-    Enchantment(string _name, Rarity _rank, string? _ability, int _cost)
+    public Enchantment(string _name, Rarity _rank, string? _ability, int _cost)
     {
         name = _name;
         rank = _rank;
         ability = _ability;
         cost = _cost;
+    }
+    public Enchantment()
+    {
+        name = "counter";
+        rank = Rarity.common;
+        ability = null;
+        cost = 3;
     }
     public override string? getname()
     {
