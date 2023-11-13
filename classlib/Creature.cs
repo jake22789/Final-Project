@@ -78,4 +78,9 @@ public int defend(Creature opossing){
     {
         return"Creature";
     }
+
+    public override int getStrength()
+    {
+        return power;
+    }
 }

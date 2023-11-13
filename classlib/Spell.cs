@@ -45,4 +45,9 @@ public record Spell : Card
     {
         return "spell";
     }
+
+    public override int getStrength()
+    {
+        return 0;
+    }
 }

@@ -45,4 +45,9 @@ public record Enchantment : Card
     {
         return"enchantment";
     }
+
+    public override int getStrength()
+    {
+        return 0;
+    }
 }

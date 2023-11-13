@@ -4,8 +4,14 @@ using System.Runtime.CompilerServices;
 Game player = new Game();
 Game mistro = new Game();
 bool done = false;
+Console.Clear();
+Console.WriteLine("what is the name of your deck?");
+string name = Console.ReadLine();
+player.setname(name);
+mistro.setname("Mistro");
 while (done == false)
 {
+    //player turn
     player.upkeep(mistro);
     player.drawcard();
     player.printGame();
@@ -16,7 +22,16 @@ while (done == false)
         player.printHand();
         player.playcard(getnumberinput(player.handsize));
     }
-    mistro.playerLife = mistro.playerLife - player.attackWith(mistro);
+    mistro.lowerlife(player.attack(mistro));
+    mistro.upkeep(player);
+    mistro.drawcard();
+    mistro.playcard(1);
+    Console.Clear();
+    mistro.printGame();
+    player.lowerlife(mistro.AIattack(player));
+
+
+    // win conditions
     if (player.playerLife <= 0 || mistro.playerLife <= 0)
     {
         done = true;

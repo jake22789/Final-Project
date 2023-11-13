@@ -55,4 +55,9 @@ public record Land : Card
     {
         return"land";
     }
+
+    public override int getStrength()
+    {
+        return 0;
+    }
 }

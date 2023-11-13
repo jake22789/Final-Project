@@ -5,15 +5,17 @@ using System.Text;
 
 public record Game
 {
+    string name;
     public int playerLife;
     public int player2Life;
     public int boardsize;
     public int mana;
     public int handsize;
+    bool landplayed;
     public Deck? drawpile = new Deck();
     Deck? graveyard = new Deck();
     Deck? hand = new Deck();
-    Deck? battlefeald = new Deck();
+    public Deck? battlefeald = new Deck();
     Deck? exile = new Deck();
 
     public int Getlife()
@@ -21,6 +23,14 @@ public record Game
         return playerLife;
     }
 
+    public void lowerlife(int attack)
+    {
+        playerLife = playerLife - attack;
+    }
+    public void setname(string _name)
+    {
+        name = _name;
+    }
     public Game()
     {
         Land green = new Land();
@@ -61,6 +71,18 @@ public record Game
     public void playcard(int selected)
     {
         int cardcost = hand.select(selected).Costint();
+        if (hand.select(selected).gettype() == "land")
+        {
+            if (landplayed == true)
+            {
+                Console.WriteLine("you have already played a land this turn");
+                return;
+            }
+            else
+            {
+                landplayed = true;
+            }
+        }
         if (cardcost <= mana)
         {
             battlefeald.add(hand.select(selected));
@@ -86,7 +108,7 @@ public record Game
             text.Append("----------");
         }
         text.Append("\n");
-        text.Append($"|life points: {playerLife}");
+        text.Append($"|{name} life: {playerLife}");
         text.Append($" mana :{mana}");
         text.Append("|\n");
         text.Append("\n");
@@ -108,8 +130,6 @@ public record Game
             text.Append("  ");
         }
 
-        text.Append("\n");
-        text.Append($"player2Life :{player2Life}");
         text.Append("\n");
         for (int i = 0; i < (boardsize); i++)
         {
@@ -153,77 +173,57 @@ public record Game
         text.Append($" mana :{mana}\n");
         Console.Write(text);
     }
-    public int attackWith(Game target)
+    public int attack(Game target)
     {
-        if (battlefeald.deck != null)
+        int damage = 0;
+        if (battlefeald.deck == null)
         {
-            string input;
-            int attackpower = 0;
-            IEnumerable<Card> attacking = from Card in battlefeald.deck where Card.gettype() == "Creature" select Card;
-            IEnumerable<Card> targetattacking = from Card in target.battlefeald.deck where Card.gettype() == "Creature" select Card;
-            List<Creature> holder = new List<Creature>();
-            List<Creature> defender = new List<Creature>();
-            foreach(Creature item in targetattacking){
-                defender.Append(item);
+            return 0;
+        }
+        else
+        {
+            foreach (var item in battlefeald.deck)
+            {
+                
+                damage = damage + item.getStrength();
+                
             }
-            
+            return damage;
+        }
+
+    }
+    public void upkeep(Game target)
+    {
+        mana = 0;
+        landplayed = false;
+        foreach (Card item in battlefeald.deck)
+        {
+            if (item.getname() == "dessert")
+                mana++;
+        }
+        player2Life = target.Getlife();
+    }
+    public int AIattack(Game target)
+    {
+        int attackpower = 0;
+        IEnumerable<Card> attacking = from Card in battlefeald.deck where Card.gettype() == "Creature" select Card;
+        List<Creature> holder = new List<Creature>();
+        if (battlefeald != null)
+        {
             foreach (Creature item in attacking)
             {
-                Console.WriteLine($"would you like to attack with {item.getname()} Y/N {attackpower}");
-                input = Console.ReadLine();
-                if (input == "y" || input == "Y")
-                {
-                    holder.Append(item);
-                }
+                holder.Append(item);
             }
-            if (targetattacking != null)
-            {
-                int defendersize = targetattacking.Count();
-                if (holder.Count == defendersize){
-                    for(int i=0; i<holder.Count;i++){
-                        if(holder[i].defend(defender[i]) == 0){
-                            killcard(holder[i]);
-                            holder.Remove(holder[i]);
-                            battlefeald.remove(i);
-                        }
-                        if(holder[i].defend(defender[i]) == 1){
-                            killcard(defender[i]);
-                            defender.Remove(defender[i]);
-                            target.battlefeald.remove(i);
-                        }
-                        if(holder[i].defend(defender[i]) == 2){
-                            killcard(holder[i]);
-                            holder.Remove(holder[i]);
-                            battlefeald.remove(i);
-                            killcard(defender[i]);
-                            defender.Remove(defender[i]);
-                            target.battlefeald.remove(i);
-                        }
-                        if(holder[i].defend(defender[i]) == 3){
-                            
-                        }
-                    }
-                }
-                
-
-            }
-
             foreach (Creature item in holder)
             {
                 attackpower = attackpower + item.power;
             }
             return attackpower;
         }
-        return 0;
-    }
-    public void upkeep(Game target)
-    {
-        mana = 0;
-        foreach (Card item in battlefeald.deck)
+        else
         {
-            if (item.getname() == "dessert")
-                mana++;
+            return 0;
         }
-        player2Life = target.playerLife;
+
     }
 }
