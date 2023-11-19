@@ -5,7 +5,8 @@ public record Spell : Card
 
     string? name;
     int cost {get; set;}
-
+     public bool state;
+    //state determins if the card wone a battle or lost true will leave it in the battlefeald false will send it to the graveyard
     Rarity rank;
 
     string? ability;
@@ -15,6 +16,7 @@ public record Spell : Card
         rank = _rank;
         ability = _ability;
         cost = _cost;
+        state =true;
     }
     public Spell()
     {
@@ -22,6 +24,7 @@ public record Spell : Card
         rank = Rarity.common;
         ability = null;
         cost = 2;
+        state = true;
     }
     public override string? getname()
     {
@@ -49,5 +52,24 @@ public record Spell : Card
     public override int getStrength()
     {
         return 0;
+    }
+    public override bool getstate()
+    {
+        return state;
+    }
+
+    public override void fight(Card target)
+    {
+        return;
+    }
+
+    public override int getHealth()
+    {
+        return 0;
+    }
+
+    public override void setState(bool dead)
+    {
+        return;
     }
 }

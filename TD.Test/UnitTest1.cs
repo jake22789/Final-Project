@@ -1,3 +1,4 @@
+using classlib;
 using Microsoft.VisualStudio.TestPlatform.ObjectModel.Client.Payloads;
 
 namespace TD.Test;
@@ -151,5 +152,103 @@ public class Tests
         player1.battlefeald.deck.Add(beetle);
         Assert.AreNotEqual(0,player1.attack(other));
     }
+    [Test]
+    public void fightingbothdie()
+    {
+        Creature beetle = new Creature();
+        Creature beetle2 = new Creature();
+        beetle.fight(beetle2);
+        if(beetle.state == false){
+        Assert.AreEqual(beetle2.state,beetle.state);
+        }else{
+            Assert.Fail();
+        }
+    }
+    [Test]
+    public void fightingbothlive()
+    {
+        Creature worm = new Creature("worm",Rarity.common,0,1," ");
+        Creature worm2 = new Creature("worm",Rarity.common,0,1," ");
+        worm.fight(worm2);
+        if(worm.state == true){
+        Assert.AreEqual(worm.state,worm2.state);
+        }else{
+            Assert.Fail();
+        }
+    }
+    [Test]
+    public void fightingonedie()
+    {
+        Creature beetle = new Creature();
+        Creature cow = new Creature("cow",Rarity.common,5,5," ");
+        beetle.fight(cow);
+        if(cow.state == false){
+            Assert.Fail();
+        }
+        if(beetle.state == false){
+            Assert.Pass();
+        }
+        else{
+            Assert.Fail();
+        }
 
+    }
+    [Test]
+    public void creatureVSSpell()
+    {
+        Creature worm = new Creature("worm",Rarity.common,0,1," ");
+        Spell lightning = new Spell();
+        worm.fight(lightning);
+        if(worm.state == true){
+        Assert.AreEqual(worm.state,lightning.state);
+        }else{
+            Assert.Fail();
+        }
+    }
+    [Test]
+    public void creatureVSland()
+    {
+        Creature worm = new Creature("worm",Rarity.common,0,1," ");
+        Land green = new Land();
+        worm.fight(green);
+        if(worm.state == true){
+        Assert.AreEqual(worm.state,green.state);
+        }else{
+            Assert.Fail();
+        }
+    }
+    [Test]
+    public void creatureVSEnchantment()
+    {
+        Creature worm = new Creature("worm",Rarity.common,0,1," ");
+        Enchantment counter = new Enchantment();
+        worm.fight(counter);
+        if(worm.state == true){
+        Assert.AreEqual(worm.state,counter.state);
+        }else{
+            Assert.Fail();
+        }
+    }
+
+
+[Test]
+    public void attackingchangesboardstateV1()
+    {
+        Land green = new Land();
+        Creature beetle = new Creature();
+        Creature beetle2 = new Creature();
+        Game other = new Game();
+        Game player1 = new Game();
+        player1.battlefeald.deck.Add(beetle);
+        player1.battlefeald.deck.Add(beetle2);
+        player1.battlefeald.deck.Add(green);
+        other.battlefeald.deck.Add(beetle);
+        other.battlefeald.deck.Add(green);
+        player1.attack(other);
+        if(player1.battlefeald.deck.Count == 2){
+            Assert.Pass();
+        }else{
+            Assert.Fail();
+        }
+    }
 }

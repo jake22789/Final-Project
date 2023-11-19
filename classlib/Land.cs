@@ -7,6 +7,7 @@ public record Land : Card
     string? name;
     Rarity rank;
     color type;
+     public bool state;
     
 
     Land(string? _name, Rarity _rank, color _type)
@@ -14,12 +15,14 @@ public record Land : Card
         name = _name;
         rank = _rank;
         type = _type;
+        state = true;
     }
      public Land()
     {
         name = "dessert";
         rank = Rarity.common;
         type = color.green;
+        state = true;
     }
 
     public override string? getname()
@@ -59,5 +62,25 @@ public record Land : Card
     public override int getStrength()
     {
         return 0;
+    }
+
+    public override bool getstate()
+    {
+        return state;
+    }
+
+    public override void fight(Card target)
+    {
+        return;
+    }
+
+    public override int getHealth()
+    {
+        return 0;
+    }
+
+    public override void setState(bool dead)
+    {
+        return;
     }
 }

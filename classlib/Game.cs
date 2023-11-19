@@ -176,20 +176,21 @@ public record Game
     public int attack(Game target)
     {
         int damage = 0;
-        if (battlefeald.deck == null)
-        {
-            return 0;
-        }
-        else
-        {
-            foreach (var item in battlefeald.deck)
-            {
-                
-                damage = damage + item.getStrength();
-                
+        int index = 0;
+        foreach(var item in target.battlefeald.deck){
+            item.fight(battlefeald.deck[index]);
+            index++;
+            if(index > battlefeald.deck.Count){
+                index--;
             }
-            return damage;
         }
+        cleanup();
+        target.cleanup();
+        foreach (var item in battlefeald.deck)
+        {
+            damage = damage + item.getStrength();
+        }
+        return damage;
 
     }
     public void upkeep(Game target)
@@ -214,6 +215,9 @@ public record Game
             {
                 holder.Append(item);
             }
+            foreach(Creature item in target.battlefeald.deck){
+
+            }
             foreach (Creature item in holder)
             {
                 attackpower = attackpower + item.power;
@@ -225,5 +229,68 @@ public record Game
             return 0;
         }
 
+    }
+    public void cleanup()
+    {
+        List<Card> dead = new List<Card>();
+        foreach (Card item in battlefeald.deck)
+        {
+            if (item.getstate() == false)
+            {
+                killcard(item);
+                dead.Add(item);
+            }
+        }
+        foreach(Card item in dead){
+            battlefeald.deck.Remove(item);
+        }
+    }
+    public void defend(List<Creature> attacking)
+    {
+        printbattlefeald();
+        int input = 0;
+        foreach(Card item in attacking){
+            //print card();
+            Console.WriteLine("what card you you like to block this one?");
+            input = int.Parse(Console.ReadLine());
+            if(input == 0){
+
+            }
+        }
+
+    }
+    public void printbattlefeald()
+    {
+        StringBuilder text = new StringBuilder();
+        foreach (Card item in battlefeald.deck)
+        {
+            text.Append("----------");
+        }
+        text.Append("\n");
+        foreach (Card item in battlefeald.deck)
+        {
+            text.Append(item.getname());
+            text.Append("  ");
+        }
+        text.Append("\n");
+        foreach (Card item in battlefeald.deck)
+        {
+            text.Append(item.getCost());
+            text.Append("  ");
+        }
+        text.Append("\n");
+        foreach (Card item in battlefeald.deck)
+        {
+            text.Append(item.getPower());
+            text.Append("  ");
+        }
+        text.Append("\n");
+        foreach (Card item in battlefeald.deck)
+        {
+            text.Append("----------");
+        }
+        text.Append("|\n");
+        text.Append($" mana :{mana}\n");
+        Console.Write(text);
     }
 }
