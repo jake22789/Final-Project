@@ -1,11 +1,27 @@
 ﻿using System.Reflection.Metadata;
 using System.Runtime.CompilerServices;
+using System.Text.Json;
+// using MtgApiManager.Lib.Core;
+// using MtgApiManager.Lib.Model;
+// using MtgApiManager.Lib.Service;
+// IMtgServiceProvider serviceProvider = new MtgServiceProvider();
+// ICardService service = serviceProvider.GetCardService();
+// var result = await service.AllAsync();
+
+// if (result.IsSuccess)
+// {
+//   var value = result.Value;
+// }
+// else
+// {
+//   var exception = result.Exception;
+// }
 bool game = true;
 int input;
 while (game == true)
 {
-    Console.WriteLine("welcome to a magic the gathering symulator\nPlease select an option\n 1: build a deck\n 2: play a game\n3: exit the program");
-    input = getnumberinput(3);
+    Console.WriteLine("welcome to a magic the gathering symulator\nPlease select an option\n 1: build a deck\n 2: play a game\n 3: exit the program");
+    input = getmenunumber();
     if(input == 1){
         deckBuilder();
     }
@@ -17,7 +33,32 @@ while (game == true)
     }
 }
 
-void deckBuilder(){
+void deckBuilder()
+{
+    Console.WriteLine("welcome to the deck builder\n here you will make new decks or modify existing decks from the card library.\n would you like to \n 1: modify existing deck \n 2: make a new deck \n 3: exit the program");
+    bool done = false;
+    while (done == false)
+{
+    int input;
+    input = getmenunumber();
+    if(input == 1){
+        modifyDeck();
+    }
+    if(input == 2){
+        buildNewDeck();
+    }
+    if (input == 3){
+        done = true;
+    }
+
+    void modifyDeck(){
+
+    }
+    void buildNewDeck(){
+        Deck builder = new Deck();
+        builder.requestcards();
+    }
+}
 
 }
 
@@ -103,6 +144,24 @@ int getnumberinput(int handsize)
     {
         Console.WriteLine("that input was invalad please input a number");
         return getnumberinput(handsize);
+    }
+    return input;
+}
+int getmenunumber()
+{
+    int input;
+    try
+    {
+        input = int.Parse(Console.ReadLine());
+        if (input > 4 || input < 0)
+        {
+            throw new Exception();
+        }
+    }
+    catch
+    {
+        Console.WriteLine("that input was invalad please input a number between 1 and 3");
+        return getmenunumber();
     }
     return input;
 }

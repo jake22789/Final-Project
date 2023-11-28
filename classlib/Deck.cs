@@ -1,4 +1,7 @@
+using System.Text.Json;
+using System.Text.Json.Nodes;
 using System.Threading.Channels;
+using Flurl.Http.Configuration;
 
 public record Deck
 {
@@ -14,36 +17,50 @@ public record Deck
     {
         deck.Add(selected);
     }
-    public int count(){
+    public int count()
+    {
         return deck.Count();
     }
-    public Card select(int number){
+    public Card select(int number)
+    {
         return deck[number];
     }
-    public void remove(int number){
+    public void remove(int number)
+    {
         deck.Remove(select(number));
     }
-    public void shuffle(int randomiser){
-       // IEnumerable<Card> holder = from Card in deck where Card.gettype() == "Creature" select Card;
-       bool swaper=false;
-       List<Card> holder = new List<Card>();
-       for(int i=0;i<deck.Count;i++)
-       {
-        if (swaper == false){
-            holder.Add(deck[i]);
-            deck.Remove(deck[i]);
-            swaper=true;
+    public void shuffle(int randomiser)
+    {
+        bool swaper = false;
+        List<Card> holder = new List<Card>();
+        for (int i = 0; i < deck.Count; i++)
+        {
+            if (swaper == false)
+            {
+                holder.Add(deck[i]);
+                deck.Remove(deck[i]);
+                swaper = true;
+            }
+            else
+            {
+                swaper = false;
+            }
         }
-        else{
-            swaper = false;
+        foreach (Card item in holder)
+        {
+            deck.Add(item);
         }
-       }
-       foreach(Card item in holder){
-        deck.Add(item);
-       }
-       if(randomiser > 0){
-        this.shuffle(randomiser - 1);
-       }
+        if (randomiser > 0)
+        {
+            this.shuffle(randomiser - 1);
+        }
+    }
+    public void requestcards()
+    {
+        string cards = File.ReadAllText("TD.Main\test.json");
+        //JsonSerializer.Deserialize<Card>(cards);
+        Console.WriteLine(JsonSerializer.Deserialize<Card>(cards));
+       
     }
 
 }
