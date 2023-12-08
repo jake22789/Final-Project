@@ -1,5 +1,6 @@
+using System.Text;
 using classlib;
-
+// this is another class deffinition
 public record Spell : Card
 {
 
@@ -71,5 +72,12 @@ public record Spell : Card
     public override void setState(bool dead)
     {
         return;
+    }
+
+    public override void print()
+    {
+        StringBuilder text = new StringBuilder();
+        text.Append($"----------\n| {getname()} |\n|          |\n|    {getCost()}     |\n|          |\n|      {ability} |\n|----------|\n");
+        Console.Write(text);
     }
 }

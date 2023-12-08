@@ -1,65 +1,101 @@
 ﻿using System.Reflection.Metadata;
 using System.Runtime.CompilerServices;
 using System.Text.Json;
-// using MtgApiManager.Lib.Core;
-// using MtgApiManager.Lib.Model;
-// using MtgApiManager.Lib.Service;
-// IMtgServiceProvider serviceProvider = new MtgServiceProvider();
-// ICardService service = serviceProvider.GetCardService();
-// var result = await service.AllAsync();
+using MtgApiManager.Lib.Core;
+using MtgApiManager.Lib.Model;
+using MtgApiManager.Lib.Service;
+IMtgServiceProvider serviceProvider = new MtgServiceProvider();
+ICardService service = serviceProvider.GetCardService();
+var result = await service.AllAsync();
 
-// if (result.IsSuccess)
-// {
-//   var value = result.Value;
-// }
-// else
-// {
-//   var exception = result.Exception;
-// }
+if (result.IsSuccess)
+{
+    var value = result.Value;
+
+}
+else
+{
+    var exception = result.Exception;
+}
+string cardsrep = JsonSerializer.Serialize(result);
 bool game = true;
 int input;
+Console.Clear();
 while (game == true)
 {
     Console.WriteLine("welcome to a magic the gathering symulator\nPlease select an option\n 1: build a deck\n 2: play a game\n 3: exit the program");
     input = getmenunumber();
-    if(input == 1){
-        deckBuilder();
+    if (input == 1)
+    {
+        deckBuilder(cardsrep);
     }
-    if(input == 2){
+    if (input == 2)
+    {
         playgame();
     }
-    if (input == 3){
+    if (input == 3)
+    {
         game = false;
     }
 }
 
-void deckBuilder()
+void deckBuilder(string jsncards)
 {
     Console.WriteLine("welcome to the deck builder\n here you will make new decks or modify existing decks from the card library.\n would you like to \n 1: modify existing deck \n 2: make a new deck \n 3: exit the program");
     bool done = false;
     while (done == false)
-{
-    int input;
-    input = getmenunumber();
-    if(input == 1){
-        modifyDeck();
-    }
-    if(input == 2){
-        buildNewDeck();
-    }
-    if (input == 3){
-        done = true;
-    }
+    {
+        int input;
+        input = getmenunumber();
+        if (input == 1)
+        {
+            modifyDeck();
+        }
+        if (input == 2)
+        {
+            buildNewDeck(jsncards);
+        }
+        if (input == 3)
+        {
+            done = true;
+        }
 
-    void modifyDeck(){
+        void modifyDeck()
+        {
 
-    }
-    void buildNewDeck(){
-        Deck builder = new Deck();
-        builder.requestcards();
-    }
-}
+        }
+        void buildNewDeck(string jcards)
+        {
+            Deck builder = new Deck();
+            string[] cards = jcards.Split("Artist");
+            cards = cards.Skip(1).ToArray();
+            string[] checker;
+            // Console.WriteLine(cards[1]);
+            // Console.WriteLine(" ");
+            // Console.WriteLine(cards[2]);
 
+            for(int i = 0; i<cards.Length;i++)
+            {
+                Console.Clear();
+                placeholdercard target = new placeholdercard(cards[i]);
+                target.NewCard().print();
+                Console.WriteLine("would you like to add this card to your deck Y/N \n if you would like to leave card builder input: 0");
+                string _input = Console.ReadLine();
+                if (_input == "y" || _input == "Y")
+                {
+                    builder.add(target.NewCard());
+                }
+                if(_input == "0"){
+                    i = cards.Length;
+                }
+                
+            }
+            string fileDeck = JsonSerializer.Serialize(builder);
+           // File.WriteAllLines("",fileDeck);
+           //tryed to use files to save decks but it it dosent like strings for some reason.
+
+        }
+    }
 }
 
 void playgame()
@@ -132,6 +168,7 @@ int getnumberinput(int handsize)
 {
     int input;
     Console.WriteLine("what card would you like to play? : 1-7");
+    // use of recursion to validate user input
     try
     {
         input = int.Parse(Console.ReadLine()) - 1;

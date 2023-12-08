@@ -1,11 +1,13 @@
 using System.Runtime.InteropServices;
 using System.Text;
 using classlib;
+// this is a data type that handles all the actions a creature card could take in magic the gathering.
 public record Creature : Card
 {
+    // this record has a few proporties as seen with counter powe and cost.
     public string? Typename;
     public int counter { get; set; }
-    string? name;
+    public string? name;
     Rarity rank;
     public int power { get; }
     int toughness { get; }
@@ -14,7 +16,8 @@ public record Creature : Card
     int cost { get; set; }
     public bool state;
 
-    public Creature(string _name, Rarity _rank, int _power, int _toughness, string? _ability)
+// oporator overloading is shown in each of these records one is used for tests and the other for the game. 
+    public Creature(string _name, Rarity _rank, int _power, int _toughness, string? _ability,int _cost)
     {
         name = _name;
         rank = _rank;
@@ -24,6 +27,7 @@ public record Creature : Card
         counter = 0;
         Typename = "Creature";
         state = true;
+        cost = _cost;
     }
     public Creature()
     {
@@ -37,6 +41,8 @@ public record Creature : Card
         Typename = "Creature";
         state = true;
     }
+
+    // so many polymorphism each of these override functions are found in each of the data types and are exicuted when a function of card is called.
     public override string? getname()
     {
         return name;
@@ -77,13 +83,6 @@ public record Creature : Card
     {
         return state;
     }
-    public void printcard()
-    {
-        StringBuilder text = new StringBuilder();
-        text.Append($"----------\n| {getname()} |\n|          |\n|    {getCost()}     |\n|          |\n|      {getPower()} |\n|----------|\n");
-        Console.Write(text);
-    }
-
     public override void fight(Card target)
     {
         if(target.getStrength()>= toughness){
@@ -102,5 +101,15 @@ public record Creature : Card
     public override void setState(bool dead)
     {
         state = dead;
+    }
+
+    public override void print()
+    {
+        if (ability == "OriginalType"){
+            ability = null;
+        }
+         StringBuilder text = new StringBuilder();
+        text.Append($"----------\n| {getname()} |\n|          |\n|    {getCost()}     |\n|  {ability}        |\n|      {getPower()} |\n|----------|\n");
+        Console.Write(text);
     }
 }

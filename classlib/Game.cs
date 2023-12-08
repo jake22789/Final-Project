@@ -3,6 +3,7 @@ using System.Runtime.CompilerServices;
 using System.Security;
 using System.Text;
 
+// this is another class definition that decided major things of the game.
 public record Game
 {
     string name;

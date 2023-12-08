@@ -1,3 +1,4 @@
+using System.Text;
 using classlib;
 
 public record Enchantment : Card
@@ -71,5 +72,13 @@ public record Enchantment : Card
     public override void setState(bool dead)
     {
         return;
+    }
+
+    public override void print()
+    {
+        StringBuilder text = new StringBuilder();
+        text.Append($"----------\n| {getname()} |\n|          |\n|    {getCost()}     |\n|          |\n|      {ability} |\n|----------|\n");
+        Console.Write(text);
+    
     }
 }

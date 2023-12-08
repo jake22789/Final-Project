@@ -2,7 +2,9 @@ using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Threading.Channels;
 using Flurl.Http.Configuration;
-
+using MtgApiManager.Lib.Core;
+using MtgApiManager.Lib.Model;
+using MtgApiManager.Lib.Service;
 public record Deck
 {
     public List<Card> deck = new List<Card>();
@@ -55,12 +57,4 @@ public record Deck
             this.shuffle(randomiser - 1);
         }
     }
-    public void requestcards()
-    {
-        string cards = File.ReadAllText("TD.Main\test.json");
-        //JsonSerializer.Deserialize<Card>(cards);
-        Console.WriteLine(JsonSerializer.Deserialize<Card>(cards));
-       
-    }
-
 }

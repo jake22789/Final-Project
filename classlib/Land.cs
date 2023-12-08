@@ -1,7 +1,7 @@
 
 using System.Text;
 using classlib;
-
+// this is another class deffinition
 public record Land : Card
 {
     string? name;
@@ -10,13 +10,13 @@ public record Land : Card
      public bool state;
     
 
-    Land(string? _name, Rarity _rank, color _type)
+    public Land(string? _name, Rarity _rank)
     {
         name = _name;
         rank = _rank;
-        type = _type;
         state = true;
     }
+    //this oporator overloading is used as a default card if the program runsinto a proplum identifying a card for any reason this card is displayed.
      public Land()
     {
         name = "dessert";
@@ -82,5 +82,12 @@ public record Land : Card
     public override void setState(bool dead)
     {
         return;
+    }
+
+    public override void print()
+    {
+         StringBuilder text = new StringBuilder();
+        text.Append($" ----------\n| {getname()}  |\n|          |\n|   {getCost()}|\n|          |\n|          |\n ---------- \n");
+        Console.Write(text);
     }
 }

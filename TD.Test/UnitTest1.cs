@@ -167,8 +167,8 @@ public class Tests
     [Test]
     public void fightingbothlive()
     {
-        Creature worm = new Creature("worm",Rarity.common,0,1," ");
-        Creature worm2 = new Creature("worm",Rarity.common,0,1," ");
+        Creature worm = new Creature("worm",Rarity.common,0,1," ",0);
+        Creature worm2 = new Creature("worm",Rarity.common,0,1," ",0);
         worm.fight(worm2);
         if(worm.state == true){
         Assert.AreEqual(worm.state,worm2.state);
@@ -180,7 +180,7 @@ public class Tests
     public void fightingonedie()
     {
         Creature beetle = new Creature();
-        Creature cow = new Creature("cow",Rarity.common,5,5," ");
+        Creature cow = new Creature("cow",Rarity.common,5,5," ",0);
         beetle.fight(cow);
         if(cow.state == false){
             Assert.Fail();
@@ -196,7 +196,7 @@ public class Tests
     [Test]
     public void creatureVSSpell()
     {
-        Creature worm = new Creature("worm",Rarity.common,0,1," ");
+        Creature worm = new Creature("worm",Rarity.common,0,1," ",0);
         Spell lightning = new Spell();
         worm.fight(lightning);
         if(worm.state == true){
@@ -208,7 +208,7 @@ public class Tests
     [Test]
     public void creatureVSland()
     {
-        Creature worm = new Creature("worm",Rarity.common,0,1," ");
+        Creature worm = new Creature("worm",Rarity.common,0,1," ",0);
         Land green = new Land();
         worm.fight(green);
         if(worm.state == true){
@@ -220,7 +220,7 @@ public class Tests
     [Test]
     public void creatureVSEnchantment()
     {
-        Creature worm = new Creature("worm",Rarity.common,0,1," ");
+        Creature worm = new Creature("worm",Rarity.common,0,1," ",0);
         Enchantment counter = new Enchantment();
         worm.fight(counter);
         if(worm.state == true){
@@ -250,5 +250,15 @@ public class Tests
         }else{
             Assert.Fail();
         }
+    }
+
+    [Test]
+    public void placeholdercardtest()
+    {
+        placeholdercard test = new placeholdercard();
+        test.cardtype="Creature";
+        test._name = "beetle";
+        Creature bug = new Creature();
+        Assert.AreEqual(test.NewCard().getname(), bug.name);
     }
 }
