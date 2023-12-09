@@ -103,13 +103,13 @@ public record Creature : Card
         state = dead;
     }
 
-    public override void print()
+    public override string print()
     {
         if (ability == "OriginalType"){
             ability = null;
         }
          StringBuilder text = new StringBuilder();
         text.Append($"----------\n| {getname()} |\n|          |\n|    {getCost()}     |\n|  {ability}        |\n|      {getPower()} |\n|----------|\n");
-        Console.Write(text);
+        return text.ToString();
     }
 }

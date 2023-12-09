@@ -74,11 +74,13 @@ public record Enchantment : Card
         return;
     }
 
-    public override void print()
+    public override string print()
     {
+        if(ability == null){
+            ability = "          ";
+        }
         StringBuilder text = new StringBuilder();
-        text.Append($"----------\n| {getname()} |\n|          |\n|    {getCost()}     |\n|          |\n|      {ability} |\n|----------|\n");
-        Console.Write(text);
-    
+        text.Append($"----------\n| {name} |\n|          |\n|    {cost}     |\n|          |\n|{ability}|\n ---------- \n");
+        return text.ToString();
     }
 }

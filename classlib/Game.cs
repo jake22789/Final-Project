@@ -34,14 +34,15 @@ public record Game
     }
     public Game()
     {
-        Land green = new Land();
-        Creature bug = new Creature();
+
         playerLife = 40;
         player2Life = 40;
         boardsize = 2;
         handsize = 7;
         for (int i = 0; i < 50; i++)
         {
+            Land green = new Land();
+            Creature bug = new Creature();
             drawpile.add(bug);
             drawpile.add(green);
         }
@@ -57,6 +58,10 @@ public record Game
         boardsize = 2;
         handsize = 7;
         drawpile = selected;
+        for (int i = 0; i < 6; i++)
+        {
+            hand.add(drawpile.drawcard());
+        }
     }
     public void drawcard()
     {
@@ -178,10 +183,12 @@ public record Game
     {
         int damage = 0;
         int index = 0;
-        foreach(var item in target.battlefeald.deck){
+        foreach (var item in target.battlefeald.deck)
+        {
             item.fight(battlefeald.deck[index]);
             index++;
-            if(index > battlefeald.deck.Count){
+            if (index > battlefeald.deck.Count)
+            {
                 index--;
             }
         }
@@ -216,7 +223,8 @@ public record Game
             {
                 holder.Append(item);
             }
-            foreach(Creature item in target.battlefeald.deck){
+            foreach (Creature item in target.battlefeald.deck)
+            {
 
             }
             foreach (Creature item in holder)
@@ -242,7 +250,8 @@ public record Game
                 dead.Add(item);
             }
         }
-        foreach(Card item in dead){
+        foreach (Card item in dead)
+        {
             battlefeald.deck.Remove(item);
         }
     }
@@ -250,11 +259,13 @@ public record Game
     {
         printbattlefeald();
         int input = 0;
-        foreach(Card item in attacking){
+        foreach (Card item in attacking)
+        {
             //print card();
             Console.WriteLine("what card you you like to block this one?");
             input = int.Parse(Console.ReadLine());
-            if(input == 0){
+            if (input == 0)
+            {
 
             }
         }

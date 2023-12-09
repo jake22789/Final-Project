@@ -13,6 +13,6 @@ public abstract record Card
     public abstract void setState(bool dead);
     Rarity rank{get; set;}
     public abstract void fight(Card target);
-    public abstract void print();
+    public abstract string print();
 
 }

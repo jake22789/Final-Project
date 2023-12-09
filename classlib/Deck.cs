@@ -7,6 +7,7 @@ using MtgApiManager.Lib.Model;
 using MtgApiManager.Lib.Service;
 public record Deck
 {
+    public string name{get; set;}
     public List<Card> deck = new List<Card>();
 
     public Card drawcard()
@@ -18,6 +19,12 @@ public record Deck
     public void add(Card selected)
     {
         deck.Add(selected);
+    }
+    public string getname(){
+        return name;
+    }
+    public void setname(string _name){
+        name = _name;
     }
     public int count()
     {

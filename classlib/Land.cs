@@ -84,10 +84,10 @@ public record Land : Card
         return;
     }
 
-    public override void print()
+    public override string print()
     {
          StringBuilder text = new StringBuilder();
         text.Append($" ----------\n| {getname()}  |\n|          |\n|   {getCost()}|\n|          |\n|          |\n ---------- \n");
-        Console.Write(text);
+       return text.ToString();
     }
 }

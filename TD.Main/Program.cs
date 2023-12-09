@@ -66,19 +66,19 @@ void deckBuilder(string jsncards)
         }
         void buildNewDeck(string jcards)
         {
+            Console.WriteLine("what would you like to call your new deck?");
+            var input = Console.ReadLine();
             Deck builder = new Deck();
+            builder.setname(input);
+            
             string[] cards = jcards.Split("Artist");
             cards = cards.Skip(1).ToArray();
-            string[] checker;
-            // Console.WriteLine(cards[1]);
-            // Console.WriteLine(" ");
-            // Console.WriteLine(cards[2]);
 
             for(int i = 0; i<cards.Length;i++)
             {
                 Console.Clear();
                 placeholdercard target = new placeholdercard(cards[i]);
-                target.NewCard().print();
+                Console.Write(target.NewCard().print());
                 Console.WriteLine("would you like to add this card to your deck Y/N \n if you would like to leave card builder input: 0");
                 string _input = Console.ReadLine();
                 if (_input == "y" || _input == "Y")
@@ -90,9 +90,10 @@ void deckBuilder(string jsncards)
                 }
                 
             }
+            //useing file to save your decks
             string fileDeck = JsonSerializer.Serialize(builder);
-           // File.WriteAllLines("",fileDeck);
-           //tryed to use files to save decks but it it dosent like strings for some reason.
+            File.WriteAllText(builder.getname(),fileDeck);
+           
 
         }
     }
@@ -100,14 +101,14 @@ void deckBuilder(string jsncards)
 
 void playgame()
 {
-    Game player = new Game();
+    
     Game mistro = new Game();
     bool done = false;
     Console.Clear();
-    Console.WriteLine("what is the name of your deck?");
-    string name = Console.ReadLine();
-    player.setname(name);
+    Game player = new Game(getdeck());
     mistro.setname("Mistro");
+
+    player.drawcard();
     while (done == false)
     {
         //player turn
@@ -127,7 +128,6 @@ void playgame()
         mistro.playcard(1);
         Console.Clear();
         mistro.printGame();
-        //player.lowerlife(mistro.AIattack(player));
         checkwin();
     }
     bool turndone()
@@ -202,4 +202,32 @@ int getmenunumber()
     }
     return input;
 }
+Deck getdeck(){
+ Console.WriteLine("what deck would you like to play with? if you have not built a deck then input 0");
+    string name = Console.ReadLine();
+    if(name == "0"){
+        Deck stompy = new Deck();
+        for (int i = 0; i < 30; i++)
+        {
+            Land green = new Land();
+            stompy.add(green);
+        }
+        for (int i = 0; i < 30; i++)
+        {
+            Creature bug = new Creature();
+            stompy.add(bug);
+        }
+        stompy.shuffle(27);
+        return stompy;
+        
+    }
+    try{
+        string jsondeck = File.ReadAllText(name);
+        return JsonSerializer.Deserialize<Deck>(jsondeck);
 
+    }catch{
+        Console.WriteLine("im sorry i could not find that deck.");
+        return getdeck();
+    }
+    
+}
