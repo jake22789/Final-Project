@@ -70,11 +70,11 @@ void deckBuilder(string jsncards)
             var input = Console.ReadLine();
             Deck builder = new Deck();
             builder.setname(input);
-            
+
             string[] cards = jcards.Split("Artist");
             cards = cards.Skip(1).ToArray();
 
-            for(int i = 0; i<cards.Length;i++)
+            for (int i = 0; i < cards.Length; i++)
             {
                 Console.Clear();
                 placeholdercard target = new placeholdercard(cards[i]);
@@ -85,15 +85,16 @@ void deckBuilder(string jsncards)
                 {
                     builder.add(target.NewCard());
                 }
-                if(_input == "0"){
+                if (_input == "0")
+                {
                     i = cards.Length;
                 }
-                
+
             }
             //useing file to save your decks
             string fileDeck = JsonSerializer.Serialize(builder);
-            File.WriteAllText(builder.getname(),fileDeck);
-           
+            File.WriteAllText(builder.getname(), fileDeck);
+            Console.WriteLine("welcome to the deck builder\n here you will make new decks or modify existing decks from the card library.\n would you like to \n 1: modify existing deck \n 2: make a new deck \n 3: exit the program");
 
         }
     }
@@ -101,7 +102,7 @@ void deckBuilder(string jsncards)
 
 void playgame()
 {
-    
+
     Game mistro = new Game();
     bool done = false;
     Console.Clear();
@@ -202,10 +203,12 @@ int getmenunumber()
     }
     return input;
 }
-Deck getdeck(){
- Console.WriteLine("what deck would you like to play with? if you have not built a deck then input 0");
+Deck getdeck()
+{
+    Console.WriteLine("what deck would you like to play with? if you have not built a deck then input 0");
     string name = Console.ReadLine();
-    if(name == "0"){
+    if (name == "0")
+    {
         Deck stompy = new Deck();
         for (int i = 0; i < 30; i++)
         {
@@ -219,15 +222,18 @@ Deck getdeck(){
         }
         stompy.shuffle(27);
         return stompy;
-        
+
     }
-    try{
+    try
+    {
         string jsondeck = File.ReadAllText(name);
         return JsonSerializer.Deserialize<Deck>(jsondeck);
 
-    }catch{
+    }
+    catch
+    {
         Console.WriteLine("im sorry i could not find that deck.");
         return getdeck();
     }
-    
+
 }
